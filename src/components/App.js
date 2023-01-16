@@ -4,7 +4,7 @@ import '../css/App.css'
 import RecipeEdit from './RecipeEdit';
 import { v4 as uuidv4 } from 'uuid';
 
-const LOCAL_STORAGE_KEY = 'cookingWithReact.recipes';
+const LOCAL_STORAGE_KEY = 'cookingWithReact.recipes'
 
 export const RecipeContext = React.createContext();
 
@@ -12,7 +12,6 @@ function App() {
   const [selectedRecipeId, setSelectedRecipeId] = useState();
   const [recipes, setRecipes] = useState(sampleRecipes);
   const selectedRecipe = recipes.find(recipe => recipe.id === selectedRecipeId);
-  console.log(selectedRecipe);
 
   useEffect(() => {
     const recipeJSON = localStorage.getItem(LOCAL_STORAGE_KEY)
@@ -23,12 +22,13 @@ function App() {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(recipes))
   }, [recipes])
 
-
   const recipeContextValue = {
     handleRecipeAdd,
     handleRecipeDelete,
-    handleRecipeSelect
+    handleRecipeSelect,
+    handleRecipeChange
   }
+
 
   function handleRecipeSelect(id) {
     setSelectedRecipeId(id)
@@ -37,27 +37,34 @@ function App() {
   function handleRecipeAdd() {
     const newRecipe = {
       id: uuidv4(),
-      name: 'Name',
-      cookTime: "1:00",
+      name: '',
+      cookTime: "",
       servings: 1,
-      instructions: "Instr.",
+      instructions: "",
       ingredients: [
         {
           id: uuidv4(),
-          name: "Name",
-          amount: "1 kg"
-        },
-        {
-          id: uuidv4(),
-          name: "Name 2",
-          amount: "1 tbs"
+          name: "",
+          amount: ""
         }
       ]
     }
+
+    setSelectedRecipeId(newRecipe.id)
     setRecipes([...recipes, newRecipe]);
   }
 
+  function handleRecipeChange(id, recipe) {
+    const newRecipes = [...recipes];
+    const index = newRecipes.findIndex(r => r.id === id);
+    newRecipes[index] = recipe;
+    setRecipes(newRecipes);
+  }
+
   function handleRecipeDelete(id) {
+    if (selectedRecipeId != null && selectedRecipeId === id) {
+      setSelectedRecipeId(undefined)
+    }
     setRecipes(recipes.filter(recipe => recipe.id !== id))
   }
 
