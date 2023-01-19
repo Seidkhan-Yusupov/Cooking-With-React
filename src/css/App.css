@@ -27,7 +27,7 @@ body {
     margin-right: 5px;
 }
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     body {
         background-image: url(/src/img/sorry.jpg);
         background-repeat: no-repeat;
@@ -35,4 +35,4 @@ body {
         background-size: contain;
         padding-top: 400px;
     }
-}
+} */
